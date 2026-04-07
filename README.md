@@ -65,18 +65,36 @@ O objetivo é criar um **chatbot contextualizado** que entende documentos e resp
 
 ```
 EixoAi/
-├── .env                      # Configuração (GROQ_API_KEY)
-├── .gitignore               # Arquivos ignorados
-├── requirements.txt         # Dependências Python
-├── README.md                # Este arquivo
+├── .env                         # Configuração (GROQ_API_KEY)
+├── .gitignore                   # Arquivos ignorados
+├── requirements.txt             # Dependências Python
+├── README.md                    # Este arquivo
 │
-├── src/                     # Código-fonte principal
+├── src/                         # Código-fonte principal
 │   ├── __init__.py
-│   ├── app.py               # Interface Gradio (INÍCIO AQUI)
-│   ├── ingester.py          # Extração de PDFs
-│   ├── llm_chain.py         # Integração com Groq LLM
-│   └── retriever.py         # Busca semântica com ChromaDB
+│   ├── app.py                   # Interface Gradio (INÍCIO AQUI)
+│   ├── ingester.py              # Extração de PDFs
+│   ├── llm_chain.py             # Integração com Groq LLM
+│   ├── retriever.py             # Busca semântica com ChromaDB
+│   ├── test.py                  # Menu de testes e validação manual
+│   ├── eval/                    # Pacote de avaliação automatizada (testes unitários + métricas)
+│   │   ├── __init__.py
+│   │   ├── evaluator.py         # Avaliação de qualidade RAG (RAGEvaluator)
+│   │   ├── models.py            # Modelos de dados para avaliação (EvalReport/EvalResult)
+│   │   └── qa_pairs.py          # Geração e manipulação de pares Q&A
+│   │  
+│   └── test_suite/              # Framework interno de testes integrados
+│       ├── __init__.py          
+│       ├── conftest.py          # Utilitários compartilhados: .env, texto fixture, fábrica de PDFs
+│       ├── runner.py            # Executor de testes: TestResult e TestRunner para validação
+│       ├── test_ingester.py     # Testes unitários para extração de texto de PDFs
+│       ├── test_integration.py  # Testes de integração: pipeline completo PDF→busca→contexto
+│       ├── test_llm_chain.py    # Testes unitários para LLMChain: histórico, mensagens, API
+│       └── test_retriever.py    # Testes unitários para DocumentRetriever: chunking, busca, ChromaDB
 │
+├── tests/                   # Diretório para pytest
+│
+├── docs/                    # Documentação adicional
 ├── data/
 │   └── uploads/             # PDFs carregados pelos usuários
 │

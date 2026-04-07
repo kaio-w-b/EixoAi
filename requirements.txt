@@ -7,3 +7,4 @@ langchain-groq==1.1.1
 langchain-community==0.4.1
 langchain-huggingface==1.2.0
 python-dotenv==1.2.1
+reportlab==4.4.10
