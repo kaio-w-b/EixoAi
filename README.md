@@ -4,6 +4,17 @@
 
 ---
 
+## 🚀 Demonstração
+
+Interface interativa disponível via Gradio (execução local):
+
+```bash
+python src/app.py
+# http://localhost:7860
+```
+
+---
+
 ## 📚 Sobre o Projeto
 
 O acesso a documentos extensos e complexos, como a Constituição Federal de 1988, é pouco eficiente e exige busca manual e interpretação especializada.
@@ -54,7 +65,7 @@ Construir um sistema modular de IA capaz de:
 │     → Extrai texto do PDF                                   │
 │     ↓                                                       │
 │  3. CHUNKING (retriever.py)                                 │
-│     → Divide em pedaços consistentes (512 chars)            │
+│     → Divide em pedaços consistentes                        │
 │     ↓                                                       │
 │  4. EMBEDDINGS (sentence-transformers)                      │
 │     → Converte para vetores semânticos                      │
@@ -111,10 +122,16 @@ Em resumo, o Art. 5º da Constituição Brasileira de 1988 estabelece que todos 
 
 > [INSERIR TRECHO DO DOCUMENTO]
 
-**Análise:**
-Resposta considerada **correta/parcial/incorreta** com base na aderência ao contexto.
+**Resultado:** ✔️ Correta
+**Motivo:** A resposta está alinhada com o trecho recuperado e cobre os principais pontos do artigo.
 
 ---
+
+⚠️ **Observação:**
+Em alguns casos, o modelo pode incluir informações adicionais não diretamente presentes no trecho recuperado, indicando oportunidades de melhoria no pipeline de recuperação (RAG).
+
+---
+
 
 ## 💬 Exemplo de Uso
 
