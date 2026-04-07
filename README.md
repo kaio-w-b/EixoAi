@@ -1,31 +1,43 @@
-# EixoAI - Chat Inteligente com PDFs
+# EixoAI - Sistema de QA com LLM e RAG aplicado a documentos jurídicos
 
-**Uma aplicação RAG (Retrieval-Augmented Generation) completa com busca semântica, LLM e interface web.**
+**Sistema de Question Answering baseado em LLM + RAG (Retrieval-Augmented Generation), avaliado utilizando a Constituição Federal de 1988 como base de conhecimento.**
 
 ---
 
 ## 📚 Sobre o Projeto
 
-**EixoAI** é um sistema inteligente que combina:
-- 🤖 **LLM (Large Language Models)** via Groq API
-- 🔍 **RAG (Retrieval-Augmented Generation)** com embeddings semânticos
-- 💾 **ChromaDB** para persistência de vetores
-- 🎛️ **Interface Web** com Gradio
-- 📄 **Processamento de PDFs** automático
+O acesso a documentos extensos e complexos, como a Constituição Federal de 1988, é pouco eficiente e exige busca manual e interpretação especializada.
 
-O objetivo é criar um **chatbot contextualizado** que entende documentos e responde perguntas com precisão usando busca semântica.
+O **EixoAI** resolve esse problema utilizando um sistema de **Question Answering com LLM e RAG**, permitindo consultas inteligentes com respostas contextualizadas e fundamentadas em documentos oficiais.
 
-### ✨ Características Principais
+Diferente de aplicações genéricas, o sistema foi **testado e avaliado com dados reais**, utilizando a Constituição como base, garantindo maior confiabilidade nas respostas.
 
-| Recurso | Descrição |
-|---------|-----------|
-| 📤 **Upload de PDFs** | Carregue PDFs e o sistema processa automaticamente |
-| 🧠 **Embeddings Semânticos** | Gera embeddings consistentes com `sentence-transformers` |
-| 🔎 **Busca Inteligente** | Encontra o contexto mais relevante para cada pergunta |
-| 💬 **Chat com IA** | Conversa natural com a LLM usando contexto do PDF |
-| 💾 **Persistência** | Armazena embeddings em ChromaDB para reutilização |
-| ⚡ **Rápido e Leve** | Usa modelo all-MiniLM-L6-v2 (eficiente) |
-| 🔧 **Tratamento de Erros** | Mostra erros como mensagens no chat |
+---
+
+## 🎯 Objetivo
+
+Construir um sistema modular de IA capaz de:
+
+* Interpretar documentos extensos automaticamente
+* Recuperar contexto relevante com busca semântica
+* Gerar respostas fundamentadas usando LLM
+* Reduzir alucinações através de RAG
+* Permitir adaptação para diferentes domínios
+
+---
+
+## ✨ Principais Características
+
+| Recurso                       | Descrição                                          |
+| ----------------------------- | -------------------------------------------------- |
+| 📄 **Processamento de PDFs**  | Extração automática de texto                       |
+| 🧠 **Embeddings Semânticos**  | Representação vetorial com `sentence-transformers` |
+| 🔎 **Busca Inteligente**      | Recuperação de contexto relevante via similaridade |
+| 🤖 **Geração com LLM**        | Respostas contextualizadas com Groq API            |
+| 💾 **Persistência Vetorial**  | Armazenamento com ChromaDB                         |
+| 🎛️ **Interface Web**         | Interação via Gradio                               |
+| 📊 **Avaliação de Respostas** | Testes com perguntas reais sobre a Constituição    |
+| ⚙️ **Arquitetura Modular**    | Fácil extensão para novos domínios                 |
 
 ---
 
@@ -35,33 +47,121 @@ O objetivo é criar um **chatbot contextualizado** que entende documentos e resp
 ┌─────────────────────────────────────────────────────────────┐
 │                     EixoAI - Fluxo Completo                 │
 ├─────────────────────────────────────────────────────────────┤
-│                                                              │
+│                                                             │
 │  1. UPLOAD PDF                                              │
-│     ↓                                                        │
+│     ↓                                                       │
 │  2. EXTRAÇÃO (ingester.py)                                  │
-│     → Extrai texto do PDF                                  │
-│     ↓                                                        │
+│     → Extrai texto do PDF                                   │
+│     ↓                                                       │
 │  3. CHUNKING (retriever.py)                                 │
-│     → Divide em pedaços consistentes (512 chars)           │
-│     ↓                                                        │
+│     → Divide em pedaços consistentes (512 chars)            │
+│     ↓                                                       │
 │  4. EMBEDDINGS (sentence-transformers)                      │
-│     → Converte para vetores semânticos                     │
-│     ↓                                                        │
+│     → Converte para vetores semânticos                      │
+│     ↓                                                       │
 │  5. ARMAZENAMENTO (ChromaDB)                                │
 │     → Salva vetores persistentemente                        │
-│     ↓                                                        │
+│     ↓                                                       │
 │  6. CHAT                                                    │
-│     → Pergunta do usuário                                  │
-│     → Busca semântica por contexto relevante               │
-│     → Envia para LLM com contexto                          │
-│     → Retorna resposta contextualizada                     │
-│                                                              │
+│     → Pergunta do usuário                                   │
+│     → Busca semântica por contexto relevante                │
+│     → Envia para LLM com contexto                           │
+│     → Retorna resposta contextualizada                      │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📁 Estrutura do Repositório
+## 📊 Avaliação
+
+O sistema foi avaliado utilizando perguntas reais sobre a Constituição Federal de 1988.
+
+### Critérios analisados:
+
+* Relevância da resposta
+* Uso correto do contexto recuperado
+* Coerência com o documento original
+
+### Exemplo:
+
+**Pergunta:**
+
+> O que garante o artigo 5º da Constituição?
+
+**Resposta do sistema:**
+
+> O Art. 5º da Constituição Brasileira de 1988 é um dos mais importantes da Carta Magna, pois estabelece os direitos fundamentais e garantias individuais e coletivas. O trecho específico que você mencionou:
+
+"Art. 5º Todos são iguais perante a lei, sem distinção de qualquer natureza, garantindo-se aos brasileiros e aos estrangeiros residentes no País a inviolabilidade do direito à vida, à liberdade, à igualdade, à segurança e à propriedade, nos termos seguintes:"
+
+Significa que:
+
+1. **Igualdade perante a lei**: Todos os indivíduos, sejam brasileiros ou estrangeiros residentes no Brasil, são considerados iguais perante a lei, sem distinção de qualquer natureza, como raça, gênero, religião, origem, condição social, etc.
+2. **Inviolabilidade do direito à vida**: O direito à vida é considerado inviolável, ou seja, não pode ser violado ou ameaçado por ninguém, incluindo o Estado. Isso significa que o Estado tem o dever de proteger a vida dos indivíduos e garantir que eles não sejam submetidos a situações que possam colocar em risco sua vida.
+3. **Direitos fundamentais**: Além do direito à vida, o Art. 5º também garante outros direitos fundamentais, como:
+ * **Liberdade**: O direito de fazer escolhas e agir de acordo com a própria vontade, desde que não viole os direitos de outrem.
+ * **Igualdade**: O direito de ser tratado de forma igualitária e não sofrer discriminação.
+ * **Segurança**: O direito de sentir-se seguro e protegido contra ameaças ou violências.
+ * **Propriedade**: O direito de possuir e gozar de bens e propriedades, desde que não viole os direitos de outrem.
+
+Em resumo, o Art. 5º da Constituição Brasileira de 1988 estabelece que todos os indivíduos são iguais perante a lei e têm direito à vida, liberdade, igualdade, segurança e propriedade, e que o Estado tem o dever de proteger e garantir esses direitos.
+
+**Trecho recuperado:**
+
+> [INSERIR TRECHO DO DOCUMENTO]
+
+**Análise:**
+Resposta considerada **correta/parcial/incorreta** com base na aderência ao contexto.
+
+---
+
+## 💬 Exemplo de Uso
+
+**Pergunta:**
+
+> Quais são os direitos fundamentais garantidos pela Constituição?
+
+**Resposta:**
+
+> De acordo com o contexto fornecido, os direitos fundamentais garantidos pela Constituição incluem:
+
+1. **Direitos Sociais**: 
+   - Educação
+   - Saúde
+   - Alimentação
+   - Trabalho
+   - Moradia
+   - Transporte
+   - Lazer
+   - Segurança
+   - Previdência social
+   - Proteção à maternidade e à infância
+   - Assistência aos desamparados
+
+2. **Direitos Humanos e Liberdades Fundamentais**: 
+   - Todos os direitos humanos e liberdades fundamentais para pessoas com deficiência, sem discriminação.
+   - Direito à não discriminação por causa de deficiência.
+   - Direito à igualdade de condições para pessoas com deficiência.
+
+3. **Direitos Específicos para Pessoas com Deficiência**:
+   - Pleno exercício de todos os direitos humanos e liberdades fundamentais.
+   - Proteção e promoção dos direitos humanos.
+   - Acesso a programas e políticas que levem em conta a proteção e promoção dos direitos humanos das pessoas com deficiência.
+
+4. **Direitos Econômicos, Sociais e Culturais**:
+   - Medidas para assegurar progressivamente o pleno exercício desses direitos, com base nos recursos disponíveis e, quando necessário, no âmbito da cooperação internacional.
+
+5. **Direitos Relacionados à Família e à Criança**:
+   - Direito à fertilidade em igualdade de condições.
+   - Direitos e responsabilidades relacionados à guarda, custódia, curatela e adoção de crianças.
+   - Igualdade de direitos em relação à vida familiar para crianças com deficiência.
+
+Esses direitos estão previstos na Constituição da República Federativa do Brasil e em tratados internacionais sobre direitos humanos dos quais o Brasil é signatário.
+
+---
+
+## 🧱 Estrutura do Projeto
 
 ```
 EixoAi/
@@ -103,212 +203,105 @@ EixoAi/
     └── index/
 ```
 
-### 📝 Descrição dos Módulos
+---
 
-| Arquivo | Função |
-|---------|--------|
-| **`app.py`** | Interface Gradio com upload de PDF e chat em tempo real |
-| **`ingester.py`** | Lê PDFs e extrai texto usando PyPDF |
-| **`llm_chain.py`** | Gerencia conversa com Groq API, histórico e prompts |
-| **`retriever.py`** | **Core do RAG**: chunking, embeddings, busca semântica |
-| **`test.py`** | Menu de testes para validar cada componente |
+## ⚙️ Tecnologias Utilizadas
+
+* Python
+* LangChain
+* ChromaDB
+* Sentence Transformers
+* Groq API (LLM)
+* Gradio
 
 ---
 
-## 🚀 Quick Start
-
-### Pré-requisitos
-- Python 3.10+
-- pip ou uv
-- Chave Groq (gratuita em https://console.groq.com)
-
-### 1️⃣ Instalação
+## 🚀 Como Executar
 
 ```bash
-# Clone o repositório
 git clone https://github.com/seu-usuario/EixoAi.git
 cd EixoAi
 
-# Crie ambiente virtual (opcional)
 python -m venv .venv
-.venv\Scripts\activate  # Windows
 source .venv/bin/activate  # Linux/Mac
+.venv\Scripts\activate     # Windows
 
-# Instale dependências
 pip install -r requirements.txt
 ```
 
-### 2️⃣ Configure Groq API
+Configure sua chave:
 
 ```bash
-# Edite .env e adicione sua chave:
-# GROQ_API_KEY=gsk_seu_token_aqui
+GROQ_API_KEY=seu_token
 ```
 
-Obtenha em: https://console.groq.com
+Execute:
 
-### 3️⃣ Execute a Aplicação
-
-**Interface Web (Gradio):**
 ```bash
 python src/app.py
-# Acesse: http://localhost:7860
+```
+
+Acesse:
+
+```
+http://localhost:7860
 ```
 
 ---
 
-## 💡 Como Usar
+## 🔧 Configurações
 
-### Via Interface Web
+### Chunking
 
-1. **Faça Upload de um PDF**
-   - Clique em "Selecione um PDF"
-   - O sistema extrai e processa automaticamente
-   - Gera embeddings para busca semântica
-
-2. **Converse com a IA**
-   - Digite sua pergunta
-   - O sistema busca contexto relevante automaticamente
-   - A LLM responde com base no PDF
-
-3. **Limpe e Recomece**
-   - "Limpar Tudo" remove o PDF e histórico
-
----
-
-## 🔧 Configuração Avançada
-
-### Ajustar Tamanho de Chunks
-
-Em `src/retriever.py`:
 ```python
-CHUNK_SIZE = 512        # Aumentar = contexto maior
-CHUNK_OVERLAP = 100     # Aumentar = melhor continuidade
+CHUNK_SIZE = 512
+CHUNK_OVERLAP = 100
 ```
 
-### Mudar Modelo LLM
+### Modelo LLM
 
-Em `src/llm_chain.py`:
 ```python
-model = "llama-3.1-70b-versatile"  # Modelos disponíveis
-temperature = 0.7                  # 0 = determinístico, 1 = criativo
-max_tokens = 1024                  # Comprimento da resposta
+model = "llama-3.1-70b-versatile"
 ```
 
-### Mudar Modelo de Embeddings
+### Embeddings
 
-Em `src/retriever.py`:
 ```python
-MODEL_NAME = "all-MiniLM-L6-v2"  # Leve e rápido
-# Alternativas:
-# "all-mpnet-base-v2" - Mais preciso (lento)
-# "multilingual-e5-small" - Para múltiplos idiomas
+MODEL_NAME = "all-MiniLM-L6-v2"
 ```
 
 ---
 
-## 📊 Exemplo de Funcionamento
+## 🔮 Próximos Passos
 
-```
-Usuario: "Qual é o objetivo principal?"
-
-Sistema:
-1. Busca semântica no PDF → Encontra 3 chunks relevantes
-2. Monta contexto com chunks + pergunta
-3. Envia para LLM com instrução
-4. LLM responde contextualizadamente
-
-Resposta: "O objetivo principal é..."
-```
+* [ ] API REST com FastAPI
+* [ ] Suporte a múltiplos documentos
+* [ ] Avaliação automatizada de respostas
+* [ ] Deploy em cloud (AWS/Render)
+* [ ] Interface web aprimorada
+* [ ] Suporte a OCR
 
 ---
 
-## 🔗 Dependências
+## 🧠 Diferenciais Técnicos
 
-```
-pypdf==6.6.0                    # Leitura de PDFs
-gradio==6.3.0                   # Interface web
-chromadb==1.4.1                 # Banco vetorial
-sentence-transformers==5.2.0    # Embeddings
-langchain==1.2.4                # Orquestração LLM
-langchain-groq==1.1.1           # Plugin Groq
-python-dotenv==1.2.1            # Variáveis de ambiente
-```
-
----
-
-## 🚨 Troubleshooting
-
-### Erro: "GROQ_API_KEY não definida"
-```bash
-# Verifique se .env existe
-cat .env
-# Deve ter: GROQ_API_KEY=gsk_...
-```
-
-### Erro: "PDF não contém texto"
-- PDFs escaneados precisam de OCR (não suportado ainda)
-- Tente com PDFs com texto selecionável
-
-### Erro: "Modelo de embeddings não encontrado"
-```bash
-# Baixa o modelo automaticamente na primeira execução
-# Se travar, download manual:
-python -m sentence_transformers.models.download all-MiniLM-L6-v2
-```
-
-### ChromaDB com erro de permissão
-```bash
-# Limpe o banco:
-rm -rf vector_db/
-# Será recriado automaticamente
-```
-
----
-
-## 📈 Roadmap
-
-- [ ] Suporte a múltiplos PDFs simultâneos
-- [ ] Histórico persistente de conversas
-- [ ] OCR para PDFs escaneados
-- [ ] Dashboard de analytics
-- [ ] Exportar conversas (JSON/PDF)
-- [ ] Interface mobile
-- [ ] Deploy em produção (Docker)
-
----
-
-## 🤝 Contribuindo
-
-Sinta-se à vontade para:
-- Reportar bugs
-- Sugerir melhorias
-- Fazer pull requests
-- Melhorar documentação
-
----
-
-## 📄 Licença
-
-MIT License - veja LICENSE para detalhes
+* Implementação completa de pipeline RAG
+* Uso de embeddings semânticos para recuperação de contexto
+* Avaliação prática com dados reais
+* Arquitetura modular e extensível
+* Integração com LLM em ambiente real
 
 ---
 
 ## 👨‍💻 Autor
 
-**Kaio W. B.** - [GitHub](https://github.com/kaio-w-b)
+**Kaio Wellinghton Batista e Silva**
+[GitHub](https://github.com/kaio-w-b)
 
 ---
 
-## 📚 Recursos Úteis
+## 📄 Licença
 
-- [Documentação Groq](https://console.groq.com/docs)
-- [Sentence Transformers](https://www.sbert.net/)
-- [ChromaDB](https://www.trychroma.com/)
-- [Gradio](https://gradio.app/)
-- [RAG Explainer](https://docs.langchain.com/docs/modules/chains/popular/qa_with_sources)
+MIT License
 
 ---
-
-**Última atualização:** 17 de Janeiro de 2026
-**Versão:** 1.0.0
