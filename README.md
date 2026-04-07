@@ -236,7 +236,7 @@ EixoAi/
 ## 🚀 Como Executar
 
 ```bash
-git clone https://github.com/seu-usuario/EixoAi.git
+git clone https://github.com/kaio-w-b/EixoAi.git
 cd EixoAi
 
 python -m venv .venv
