@@ -102,25 +102,33 @@ O sistema foi avaliado utilizando perguntas reais sobre a Constituição Federal
 
 **Resposta do sistema:**
 
-> O Art. 5º da Constituição Brasileira de 1988 é um dos mais importantes da Carta Magna, pois estabelece os direitos fundamentais e garantias individuais e coletivas. O trecho específico que você mencionou:
+> O artigo 5º da Constituição garante, aos brasileiros e estrangeiros residentes no País, a inviolabilidade do direito à:
+>
+> * Vida
+> * Liberdade
+> * Igualdade
+> * Segurança
+> * Propriedade
 
-"Art. 5º Todos são iguais perante a lei, sem distinção de qualquer natureza, garantindo-se aos brasileiros e aos estrangeiros residentes no País a inviolabilidade do direito à vida, à liberdade, à igualdade, à segurança e à propriedade, nos termos seguintes:"
-
-Significa que:
-
-1. **Igualdade perante a lei**: Todos os indivíduos, sejam brasileiros ou estrangeiros residentes no Brasil, são considerados iguais perante a lei, sem distinção de qualquer natureza, como raça, gênero, religião, origem, condição social, etc.
-2. **Inviolabilidade do direito à vida**: O direito à vida é considerado inviolável, ou seja, não pode ser violado ou ameaçado por ninguém, incluindo o Estado. Isso significa que o Estado tem o dever de proteger a vida dos indivíduos e garantir que eles não sejam submetidos a situações que possam colocar em risco sua vida.
-3. **Direitos fundamentais**: Além do direito à vida, o Art. 5º também garante outros direitos fundamentais, como:
- * **Liberdade**: O direito de fazer escolhas e agir de acordo com a própria vontade, desde que não viole os direitos de outrem.
- * **Igualdade**: O direito de ser tratado de forma igualitária e não sofrer discriminação.
- * **Segurança**: O direito de sentir-se seguro e protegido contra ameaças ou violências.
- * **Propriedade**: O direito de possuir e gozar de bens e propriedades, desde que não viole os direitos de outrem.
-
-Em resumo, o Art. 5º da Constituição Brasileira de 1988 estabelece que todos os indivíduos são iguais perante a lei e têm direito à vida, liberdade, igualdade, segurança e propriedade, e que o Estado tem o dever de proteger e garantir esses direitos.
+> Além disso, ele também estabelece alguns princípios fundamentais, como:
+>
+> * Igualdade entre homens e mulheres em direitos e obrigações
+> * Ninguém será obrigado a fazer ou deixar de fazer alguma coisa senão em virtude de lei
+> * Proibição de tortura e tratamento desumano ou degradante
+> * Liberdade de manifestação do pensamento, desde que não seja anônima
+> * Direito de resposta e indenização por dano material, moral ou à imagem
+> * Liberdade de consciência e de crença, com garantia de livre exercício dos cultos religiosos e proteção aos locais de culto e suas liturgias.
 
 **Trecho recuperado:**
 
-> [INSERIR TRECHO DO DOCUMENTO]
+> Art. 5o Todos são iguais perante a lei, sem distinção de qualquer natureza, garantindo-se
+> aos brasileiros e aos estrangeiros residentes no País a inviolabilidade do direito à vida, à
+> liberdade, à igualdade, à segurança e à propriedade, nos termos seguintes: I – homens e mulheres são iguais em direitos e obrigações, nos termos desta Cons-
+> tituição; II – ninguém será obrigado a fazer ou deixar de fazer alguma coisa senão em virtude
+> de lei; III – ninguém será submetido a tortura nem a tratamento desumano ou degradante; IV – é livre a manifestação do pensamento, sendo vedado o anonimato; V – é assegurado o direito de resposta, proporcional ao > agravo, além da indenização
+> por dano material, moral ou à imagem; VI – é inviolável a liberdade de consciência e de crença, sendo assegurado o livre
+> exercício dos cultos religiosos e garantida, na forma da lei, a proteção aos locais de culto
+> e a suas liturgias;
 
 **Resultado:** ✔️ Correta
 **Motivo:** A resposta está alinhada com o trecho recuperado e cobre os principais pontos do artigo.
