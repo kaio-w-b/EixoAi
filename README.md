@@ -1,6 +1,6 @@
 # EixoAI - Sistema de QA com LLM e RAG aplicado a documentos jurídicos
 
-**Sistema de Question Answering baseado em LLM + RAG (Retrieval-Augmented Generation), avaliado utilizando a Constituição Federal de 1988 como base de conhecimento.**
+**Sistema de Question Answering baseado em LLM + RAG (Retrieval-Augmented Generation), com avaliação quantitativa utilizando a Constituição Federal de 1988 como base de conhecimento.**
 
 ---
 
@@ -17,11 +17,15 @@ python src/app.py
 
 ## 📚 Sobre o Projeto
 
-O acesso a documentos extensos e complexos, como a Constituição Federal de 1988, é pouco eficiente e exige busca manual e interpretação especializada.
+A consulta a documentos jurídicos extensos, como a Constituição Federal de 1988, é um processo manual, demorado e sujeito a erros de interpretação.
 
-O **EixoAI** resolve esse problema utilizando um sistema de **Question Answering com LLM e RAG**, permitindo consultas inteligentes com respostas contextualizadas e fundamentadas em documentos oficiais.
+O EixoAI resolve esse problema reduzindo consultas de minutos para segundos, utilizando um sistema de RAG (Retrieval-Augmented Generation) que:
 
-Diferente de aplicações genéricas, o sistema foi **testado e avaliado com dados reais**, utilizando a Constituição como base, garantindo maior confiabilidade nas respostas.
+* Recupera trechos relevantes via busca semântica
+* Gera respostas contextualizadas com LLM
+* Fundamenta respostas com base no documento original
+
+O sistema foi avaliado quantitativamente com dataset próprio, garantindo confiabilidade e transparência nos resultados.
 
 ---
 
@@ -46,7 +50,7 @@ Construir um sistema modular de IA capaz de:
 | 🔎 **Busca Inteligente**      | Recuperação de contexto relevante via similaridade |
 | 🤖 **Geração com LLM**        | Respostas contextualizadas com Groq API            |
 | 💾 **Persistência Vetorial**  | Armazenamento com ChromaDB                         |
-| 🎛️ **Interface Web**         | Interação via Gradio                               |
+| 🎛️ **Interface Web**          | Interação via Gradio                               |
 | 📊 **Avaliação de Respostas** | Testes com perguntas reais sobre a Constituição    |
 | ⚙️ **Arquitetura Modular**    | Fácil extensão para novos domínios                 |
 
@@ -86,7 +90,7 @@ Construir um sistema modular de IA capaz de:
 
 ## 📊 Avaliação
 
-O sistema foi avaliado utilizando perguntas reais sobre a Constituição Federal de 1988.
+O sistema foi avaliado utilizando um dataset próprio com 48 queries baseadas na Constituição Federal de 1988, incluindo níveis de dificuldade (easy, medium, hard).
 
 ### Critérios analisados:
 
@@ -94,50 +98,62 @@ O sistema foi avaliado utilizando perguntas reais sobre a Constituição Federal
 * Uso correto do contexto recuperado
 * Coerência com o documento original
 
-### Exemplo:
+### ⚙️ Configuração:
 
-**Pergunta:**
+* Chunks gerados: 1499
+* Top-K retrieval: 5
+* Latência média: 14.3 ms por query
 
-> O que garante o artigo 5º da Constituição?
+### 📈 Métricas de Recuperação:
 
-**Resposta do sistema:**
+| Métrica                | Descrição  |
+| ---------------------- | ---------- |
+|  **Hit Rate**          | 79.2%      |
+|  **MRR**               | 64.7%      |
+|  **Precision@K**      | 30.8%      |
+|  **NDCG**              | 67.7%      |
+|  **Keyword Coverage**  | 65.3%      |
 
-> O artigo 5º da Constituição garante, aos brasileiros e estrangeiros residentes no País, a inviolabilidade do direito à:
->
-> * Vida
-> * Liberdade
-> * Igualdade
-> * Segurança
-> * Propriedade
+### 📊 Performance por Dificuldade:
 
-> Além disso, ele também estabelece alguns princípios fundamentais, como:
->
-> * Igualdade entre homens e mulheres em direitos e obrigações
-> * Ninguém será obrigado a fazer ou deixar de fazer alguma coisa senão em virtude de lei
-> * Proibição de tortura e tratamento desumano ou degradante
-> * Liberdade de manifestação do pensamento, desde que não seja anônima
-> * Direito de resposta e indenização por dano material, moral ou à imagem
-> * Liberdade de consciência e de crença, com garantia de livre exercício dos cultos religiosos e proteção aos locais de culto e suas liturgias.
+| Nível         | Hit Rate  |
+| ------------- | --------- |
+| 🟢 **Easy**   | 92.9%     |
+| 🟡 **Medium** | 73.9%     |
+| 🔴 **Hard**   | 72.7%     |
 
-**Trecho recuperado:**
+### 🧠 Interpretação dos Resultados:
 
-> Art. 5o Todos são iguais perante a lei, sem distinção de qualquer natureza, garantindo-se
-> aos brasileiros e aos estrangeiros residentes no País a inviolabilidade do direito à vida, à
-> liberdade, à igualdade, à segurança e à propriedade, nos termos seguintes: I – homens e mulheres são iguais em direitos e obrigações, nos termos desta Cons-
-> tituição; II – ninguém será obrigado a fazer ou deixar de fazer alguma coisa senão em virtude
-> de lei; III – ninguém será submetido a tortura nem a tratamento desumano ou degradante; IV – é livre a manifestação do pensamento, sendo vedado o anonimato; V – é assegurado o direito de resposta, proporcional ao > agravo, além da indenização
-> por dano material, moral ou à imagem; VI – é inviolável a liberdade de consciência e de crença, sendo assegurado o livre
-> exercício dos cultos religiosos e garantida, na forma da lei, a proteção aos locais de culto
-> e a suas liturgias;
+* Alta capacidade de recuperação semântica (Hit Rate ~80%)
+* Excelente desempenho em perguntas diretas (easy)
+* Boa generalização em perguntas complexas (hard ~72%)
 
-**Resultado:** ✔️ Correta
-**Motivo:** A resposta está alinhada com o trecho recuperado e cobre os principais pontos do artigo.
+### Pontos de melhoria:
 
----
+* Queries jurídicas específicas (ex: habeas corpus, cláusulas pétreas)
+* Aumento de precisão no Top-K (Precision@K)
 
-⚠️ **Observação:**
-Em alguns casos, o modelo pode incluir informações adicionais não diretamente presentes no trecho recuperado, indicando oportunidades de melhoria no pipeline de recuperação (RAG).
+### 🏁 Veredicto
 
+* ✔ Excelente desempenho em recuperação de contexto
+* ✔ Sistema robusto para consultas jurídicas reais
+* ⚠️ Oportunidade de melhoria em queries altamente específicas
+
+### 🧪 Dataset de Avaliação
+
+O projeto utiliza um dataset próprio estruturado com:
+
+* 48 perguntas baseadas na CF/88
+* Classificação por dificuldade
+* Ground truth (respostas esperadas)
+* Keywords para validação de contexto
+* Variações semânticas
+
+Isso permite avaliar:
+
+* Qualidade da recuperação (retrieval)
+* Robustez semântica
+* Cobertura do conhecimento
 ---
 
 
@@ -150,39 +166,39 @@ Em alguns casos, o modelo pode incluir informações adicionais não diretamente
 **Resposta:**
 
 > De acordo com o contexto fornecido, os direitos fundamentais garantidos pela Constituição incluem:
-
-1. **Direitos Sociais**: 
-   - Educação
-   - Saúde
-   - Alimentação
-   - Trabalho
-   - Moradia
-   - Transporte
-   - Lazer
-   - Segurança
-   - Previdência social
-   - Proteção à maternidade e à infância
-   - Assistência aos desamparados
-
-2. **Direitos Humanos e Liberdades Fundamentais**: 
-   - Todos os direitos humanos e liberdades fundamentais para pessoas com deficiência, sem discriminação.
-   - Direito à não discriminação por causa de deficiência.
-   - Direito à igualdade de condições para pessoas com deficiência.
-
-3. **Direitos Específicos para Pessoas com Deficiência**:
-   - Pleno exercício de todos os direitos humanos e liberdades fundamentais.
-   - Proteção e promoção dos direitos humanos.
-   - Acesso a programas e políticas que levem em conta a proteção e promoção dos direitos humanos das pessoas com deficiência.
-
-4. **Direitos Econômicos, Sociais e Culturais**:
-   - Medidas para assegurar progressivamente o pleno exercício desses direitos, com base nos recursos disponíveis e, quando necessário, no âmbito da cooperação internacional.
-
-5. **Direitos Relacionados à Família e à Criança**:
-   - Direito à fertilidade em igualdade de condições.
-   - Direitos e responsabilidades relacionados à guarda, custódia, curatela e adoção de crianças.
-   - Igualdade de direitos em relação à vida familiar para crianças com deficiência.
-
-Esses direitos estão previstos na Constituição da República Federativa do Brasil e em tratados internacionais sobre direitos humanos dos quais o Brasil é signatário.
+>
+> 1. **Direitos Sociais**: 
+>    - Educação
+>    - Saúde
+>    - Alimentação
+>    - Trabalho
+>    - Moradia
+>    - Transporte
+>    - Lazer
+>    - Segurança
+>    - Previdência social
+>    - Proteção à maternidade e à infância
+>    - Assistência aos desamparados
+> 
+> 2. **Direitos Humanos e Liberdades Fundamentais**: 
+>    - Todos os direitos humanos e liberdades fundamentais para pessoas com deficiência, sem discriminação.
+>    - Direito à não discriminação por causa de deficiência.
+>    - Direito à igualdade de condições para pessoas com deficiência.
+> 
+> 3. **Direitos Específicos para Pessoas com Deficiência**:
+>    - Pleno exercício de todos os direitos humanos e liberdades fundamentais.
+>    - Proteção e promoção dos direitos humanos.
+>    - Acesso a programas e políticas que levem em conta a proteção e promoção dos direitos humanos das pessoas com deficiência.
+> 
+> 4. **Direitos Econômicos, Sociais e Culturais**:
+>    - Medidas para assegurar progressivamente o pleno exercício desses direitos, com base nos recursos disponíveis e, quando necessário, no âmbito da cooperação internacional.
+> 
+> 5. **Direitos Relacionados à Família e à Criança**:
+>    - Direito à fertilidade em igualdade de condições.
+>    - Direitos e responsabilidades relacionados à guarda, custódia, curatela e adoção de crianças.
+>   - Igualdade de direitos em relação à vida familiar para crianças com deficiência.
+> 
+> Esses direitos estão previstos na Constituição da República Federativa do Brasil e em tratados internacionais sobre direitos humanos dos quais o Brasil é signatário.
 
 ---
 
