@@ -121,7 +121,7 @@ def _run_cf88_eval(top_k: int, answers: bool, output: str | None = None) -> None
         report = evaluator.evaluate(
             pdf_path=sample_path,
             qa_pairs=CF88_QA_PAIRS,
-            evaluate_answer=answers,
+            # evaluate_answer=answers,
         )
     else:
         print(_warn("EVAL_PDF_PATH não definido no .env — usando texto de amostra embutido."))

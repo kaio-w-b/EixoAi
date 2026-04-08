@@ -202,6 +202,32 @@ def process_pdf(file):
         )
 
 
+def _expand_query(query: str, llm: "LLMChain") -> str:
+    """
+    Usa a LLM para reescrever a query adicionando termos jurídicos relacionados.
+    Combina a query original com a versão expandida para maximizar o recall.
+    Retorna a query original em caso de erro (nunca bloqueia o fluxo).
+    """
+    try:
+        prompt = (
+            "Reescreva a pergunta abaixo adicionando sinônimos e termos jurídicos "
+            "da Constituição Federal brasileira que possam aparecer nos trechos relevantes. "
+            "Responda APENAS com a pergunta reescrita, sem explicações.\n\n"
+            f"Pergunta: {query}"
+        )
+        expanded = llm.generate_response(prompt)
+        # Remove a pergunta do histórico — é uma chamada interna
+        if llm.conversation_history:
+            llm.conversation_history.pop()  # assistant
+            llm.conversation_history.pop()  # user
+        combined = f"{query} {expanded}"
+        logger.info(f"🔎 Query expandida: {combined[:120]}…")
+        return combined
+    except Exception as e:
+        logger.warning(f"Query expansion falhou, usando original: {e}")
+        return query
+
+
 def send_message(user_message: str, history: List[Dict]) -> Tuple[str, List[Dict], str]:
     global llm_chain, retriever, current_document_id
 
@@ -217,7 +243,9 @@ def send_message(user_message: str, history: List[Dict]) -> Tuple[str, List[Dict
         context = ""
         if current_document_id and retriever:
             try:
-                results = retriever.search(user_message, top_k=5, rerank=True)
+                # Expande a query com termos jurídicos antes de buscar
+                search_query = _expand_query(user_message, llm_chain)
+                results = retriever.search(search_query, top_k=5, rerank=True)
                 if results:
                     chunk_parts = ["🔍 **CHUNKS RECUPERADOS — RASTREAMENTO COMPLETO**\n"]
                     chunk_parts.append("=" * 100)
@@ -234,7 +262,7 @@ def send_message(user_message: str, history: List[Dict]) -> Tuple[str, List[Dict
                         chunk_parts.append("```")
                         chunk_parts.append("-" * 100)
                     chunk_info = "\n".join(chunk_parts)
-                    context = retriever.get_context(user_message, top_k=5, min_relevance=0.0)
+                    context = retriever.get_context(search_query, top_k=5, min_relevance=0.0)
                 else:
                     chunk_info = "⚠️ Nenhum chunk relevante encontrado para esta pergunta."
             except Exception as e:
@@ -428,4 +456,4 @@ with gr.Blocks(title="EixoAI") as demo:
 
 
 if __name__ == "__main__":
-    demo.launch(share=False, server_name="0.0.0.0", server_port=7860, theme=gr.themes.Soft(), css=CUSTOM_CSS)
+    demo.launch(share=True, server_name="0.0.0.0", server_port=7860, theme=gr.themes.Soft(), css=CUSTOM_CSS)

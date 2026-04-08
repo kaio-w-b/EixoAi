@@ -40,7 +40,6 @@ if str(_SRC) not in sys.path:
     sys.path.insert(0, str(_SRC))
 
 from ingester import extract_text_from_pdf
-from retriever import DocumentRetriever
 from utils.display import _info, _ok, _warn, YELLOW, GREEN, RED, BOLD, RESET
 from eval.models import EvalReport, EvalResult
 from llm_chain import LLMChain
