@@ -46,7 +46,7 @@ Construir um sistema modular de IA capaz de:
 | Recurso                       | Descrição                                          |
 | ----------------------------- | -------------------------------------------------- |
 | 📄 **Processamento de PDFs**  | Extração automática de texto                       |
-| 🧠 **Embeddings Semânticos**  | Representação vetorial com `sentence-transformers` |
+| 🧠 **Embeddings Semânticos**  | `multilingual-e5-small` via `sentence-transformers` |
 | 🔎 **Busca Inteligente**      | Recuperação de contexto relevante via similaridade |
 | 🤖 **Geração com LLM**        | Respostas contextualizadas com Groq API            |
 | 💾 **Persistência Vetorial**  | Armazenamento com ChromaDB                         |
@@ -206,54 +206,45 @@ Isso permite avaliar:
 
 ```
 EixoAi/
-├── .env                         # Configuração (GROQ_API_KEY)
-├── .gitignore                   # Arquivos ignorados
+├── .env                         # GROQ_API_KEY (não versionado, crie localmente)
 ├── requirements.txt             # Dependências Python
-├── README.md                    # Este arquivo
+├── LICENSE
+├── README.md
 │
-├── src/                         # Código-fonte principal
-│   ├── __init__.py
-│   ├── app.py                   # Interface Gradio (INÍCIO AQUI)
-│   ├── ingester.py              # Extração de PDFs
-│   ├── llm_chain.py             # Integração com Groq LLM
-│   ├── retriever.py             # Busca semântica com ChromaDB
-│   ├── test.py                  # Menu de testes e validação manual
-│   ├── eval/                    # Pacote de avaliação automatizada (testes unitários + métricas)
-│   │   ├── __init__.py
-│   │   ├── evaluator.py         # Avaliação de qualidade RAG (RAGEvaluator)
-│   │   ├── models.py            # Modelos de dados para avaliação (EvalReport/EvalResult)
-│   │   └── qa_pairs.py          # Geração e manipulação de pares Q&A
-│   │  
-│   └── test_suite/              # Framework interno de testes integrados
-│       ├── __init__.py          
-│       ├── conftest.py          # Utilitários compartilhados: .env, texto fixture, fábrica de PDFs
-│       ├── runner.py            # Executor de testes: TestResult e TestRunner para validação
-│       ├── test_ingester.py     # Testes unitários para extração de texto de PDFs
-│       ├── test_integration.py  # Testes de integração: pipeline completo PDF→busca→contexto
-│       ├── test_llm_chain.py    # Testes unitários para LLMChain: histórico, mensagens, API
-│       └── test_retriever.py    # Testes unitários para DocumentRetriever: chunking, busca, ChromaDB
-│
-├── tests/                   # Diretório para pytest
-│
-├── docs/                    # Documentação adicional
-├── data/
-│   └── uploads/             # PDFs carregados pelos usuários
-│
-└── vector_db/               # Banco de dados de embeddings (ChromaDB)
-    ├── chroma.parquet
-    └── index/
+└── src/
+    ├── app.py                   # Interface Gradio (INÍCIO AQUI)
+    ├── ingester.py              # Extração de texto de PDFs
+    ├── retriever.py             # Chunking, embeddings e busca semântica com ChromaDB
+    ├── llm_chain.py             # Integração com a LLM via Groq
+    ├── test.py                  # Menu de testes e validação manual
+    ├── utils/display.py         # Formatação de saída
+    │
+    ├── eval/                    # Avaliação da recuperação
+    │   ├── evaluator.py         # RAGEvaluator: Hit Rate, MRR, Precision@K, NDCG
+    │   ├── models.py            # EvalReport / EvalResult
+    │   └── qa_pairs.py          # Dataset de 48 perguntas sobre a CF/88
+    │
+    └── test_suite/              # Testes unitários e de integração
+        ├── conftest.py          # .env, texto fixture, fábrica de PDFs
+        ├── runner.py            # TestResult e TestRunner
+        ├── test_ingester.py
+        ├── test_retriever.py
+        ├── test_llm_chain.py
+        └── test_integration.py  # Pipeline completo PDF → busca → contexto
 ```
+
+Os dados gerados em execução (`data/uploads/` e o banco vetorial do ChromaDB) ficam apenas na máquina local.
 
 ---
 
 ## ⚙️ Tecnologias Utilizadas
 
 * Python
-* LangChain
+* Groq API (Llama 3.3 70B)
 * ChromaDB
-* Sentence Transformers
-* Groq API (LLM)
+* Sentence Transformers (`multilingual-e5-small`)
 * Gradio
+* pypdf
 
 ---
 
@@ -295,21 +286,26 @@ http://localhost:7860
 ### Chunking
 
 ```python
-CHUNK_SIZE = 512
-CHUNK_OVERLAP = 100
+CHUNK_SIZE     = 1024
+CHUNK_OVERLAP  = 200
+CHUNK_STRATEGY = "legal"   # 'legal' | 'semantic' | 'fixed' | 'sentence'
 ```
+
+A estratégia `legal` divide o texto respeitando a estrutura de artigos da Constituição.
 
 ### Modelo LLM
 
 ```python
-model = "llama-3.1-70b-versatile"
+model = "llama-3.3-70b-versatile"  # via Groq
 ```
 
 ### Embeddings
 
 ```python
-MODEL_NAME = "all-MiniLM-L6-v2"
+MODEL_NAME = "intfloat/multilingual-e5-small"
 ```
+
+O `multilingual-e5-small` substituiu o `all-MiniLM-L6-v2` por ter melhor suporte a português. Ele exige os prefixos `passage:` (indexação) e `query:` (busca).
 
 ---
 
@@ -317,7 +313,7 @@ MODEL_NAME = "all-MiniLM-L6-v2"
 
 * [ ] API REST com FastAPI
 * [ ] Suporte a múltiplos documentos
-* [ ] Avaliação automatizada de respostas
+* [ ] Avaliação automatizada da qualidade das respostas geradas (ex.: LLM-as-judge)
 * [ ] Deploy em cloud (AWS/Render)
 * [ ] Interface web aprimorada
 * [ ] Suporte a OCR
@@ -336,8 +332,7 @@ MODEL_NAME = "all-MiniLM-L6-v2"
 
 ## 👨‍💻 Autor
 
-**Kaio Wellinghton Batista e Silva**
-[GitHub](https://github.com/kaio-w-b)
+**Kaio Wellington Batista e Silva** · [GitHub](https://github.com/kaio-w-b) · [LinkedIn](https://www.linkedin.com/in/kaiowellinghton)
 
 ---
 
